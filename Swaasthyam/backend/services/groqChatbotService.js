@@ -11,7 +11,7 @@ class GroqChatbotService {
     const API_KEY = process.env.GROQ_API_KEY || 'your_groq_api_key_here';
     
     if (!process.env.GROQ_API_KEY) {
-      console.warn('⚠️  GROQ_API_KEY not set in environment variables. Please add it to your .env file.');
+      console.warn('⚠️  GROQ_API_KEY not set in environment variables. Using fallback key.');
     }
     
     this.groq = new Groq({ apiKey: API_KEY });

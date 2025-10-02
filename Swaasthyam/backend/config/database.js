@@ -2,7 +2,14 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+    // Fallback MongoDB URI if environment variable is not set
+    const MONGODB_URI = process.env.MONGODB_URI || 
+      'mongodb+srv://swaasthyam-admin:Pass123@swaasthyam-cluster.wck5to5.mongodb.net/swaasthyam?retryWrites=true&w=majority&appName=swaasthyam-cluster';
+    
+    console.log('🔍 Connecting to MongoDB...');
+    console.log(`📍 URI exists: ${!!MONGODB_URI}`);
+    
+    const conn = await mongoose.connect(MONGODB_URI, {
       // These options are no longer needed in Mongoose 6+
       // but keeping them for compatibility
     });
