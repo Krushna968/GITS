@@ -467,7 +467,7 @@ export default function OfficerDashboard() {
                 <div className="mt-3 rounded-lg border bg-white p-4">
                   <p className="text-sm opacity-80">Platform & Data Issues</p>
                   <p className="mt-2 text-blue-700 font-semibold">
-                    support@swaasthyam.kerala.gov.in
+                    support@swaasthyam.gov.in
                   </p>
                 </div>
               </div>
@@ -481,11 +481,369 @@ export default function OfficerDashboard() {
         )}
 
         {active === "health" && (
-          <EmptyCenter text="health section - Content coming soon" />
+          <div className="p-4 md:p-6 space-y-6">
+            <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-6 rounded-xl shadow-lg">
+              <h1 className="text-2xl font-bold mb-2">Health Management Dashboard</h1>
+              <p className="text-emerald-100">Monitor and manage worker health records and medical data</p>
+            </div>
+
+            {/* Health Overview Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="h-12 w-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <HeartIcon className="h-6 w-6 text-emerald-600" />
+                  </div>
+                  <span className="text-sm font-medium text-emerald-600">+12%</span>
+                </div>
+                <div className="text-3xl font-bold text-gray-900">156</div>
+                <div className="text-sm text-gray-600 mt-1">Health Records Updated</div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <AlertTriangle className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <span className="text-sm font-medium text-orange-600">3 Active</span>
+                </div>
+                <div className="text-3xl font-bold text-gray-900">3</div>
+                <div className="text-sm text-gray-600 mt-1">Pending Health Alerts</div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Clock className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <span className="text-sm font-medium text-blue-600">This Week</span>
+                </div>
+                <div className="text-3xl font-bold text-gray-900">12</div>
+                <div className="text-sm text-gray-600 mt-1">Upcoming Checkups</div>
+              </div>
+            </div>
+
+            {/* Recent Health Logs */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <HeartIcon className="h-5 w-5 mr-2 text-emerald-600" />
+                  Recent Health Logs
+                </h2>
+                <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                  View All →
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div className="border border-l-4 border-l-green-500 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="font-semibold text-gray-900">Rajesh Kumar</span>
+                        <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                          Fit
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-1">General Checkup - All parameters normal</p>
+                      <p className="text-xs text-gray-500">SW-2024-KL-001234 • 2024-09-10</p>
+                    </div>
+                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                      View Details
+                    </button>
+                  </div>
+                </div>
+
+                <div className="border border-l-4 border-l-orange-500 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="font-semibold text-gray-900">Suresh Nair</span>
+                        <span className="px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">
+                          Needs Attention
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-1">High fever detected - requires immediate attention</p>
+                      <p className="text-xs text-gray-500">SW-2024-KL-001235 • 2024-09-13</p>
+                    </div>
+                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                      View Details
+                    </button>
+                  </div>
+                </div>
+
+                <div className="border border-l-4 border-l-yellow-500 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="font-semibold text-gray-900">Ramesh Pillai</span>
+                        <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+                          Pending Review
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-1">Blood pressure monitoring required</p>
+                      <p className="text-xs text-gray-500">SW-2024-KL-001236 • 2024-09-12</p>
+                    </div>
+                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Health Resources */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-6">
+                <h3 className="font-semibold text-emerald-900 mb-4 flex items-center">
+                  <HeartMini className="h-5 w-5 mr-2 text-emerald-600" />
+                  Healthcare Resources
+                </h3>
+                <div className="space-y-3">
+                  <a href="#" className="block p-3 bg-white rounded-lg hover:shadow-md transition-shadow">
+                    <div className="font-medium text-gray-900">Medical Guidelines</div>
+                    <div className="text-sm text-gray-600 mt-1">Occupational health standards and protocols</div>
+                  </a>
+                  <a href="#" className="block p-3 bg-white rounded-lg hover:shadow-md transition-shadow">
+                    <div className="font-medium text-gray-900">Emergency Procedures</div>
+                    <div className="text-sm text-gray-600 mt-1">Quick reference for medical emergencies</div>
+                  </a>
+                  <a href="#" className="block p-3 bg-white rounded-lg hover:shadow-md transition-shadow">
+                    <div className="font-medium text-gray-900">Disease Prevention</div>
+                    <div className="text-sm text-gray-600 mt-1">Best practices for worker health safety</div>
+                  </a>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                <h3 className="font-semibold text-blue-900 mb-4">24/7 Emergency Hotline</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center p-4 bg-white rounded-lg">
+                    <div className="h-10 w-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-xl">🚨</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900">Emergency Services</div>
+                      <div className="text-blue-600 font-mono">112</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center p-4 bg-white rounded-lg">
+                    <div className="h-10 w-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-xl">🏥</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900">Healthcare Helpline</div>
+                      <div className="text-blue-600 font-mono">1800-425-1425</div>
+                    </div>
+                  </div>
+                  <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                    📞 Report Health Emergency
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
 
         {active === "help" && (
-          <EmptyCenter text="help section - Content coming soon" />
+          <div className="p-4 md:p-6 space-y-6">
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6 rounded-xl shadow-lg">
+              <h1 className="text-2xl font-bold mb-2">Help & Support Center</h1>
+              <p className="text-purple-100">Get assistance and access resources for platform and medical support</p>
+            </div>
+
+            {/* Quick Help Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <button className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md hover:border-blue-300 transition-all text-left">
+                <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">📞</span>
+                </div>
+                <div className="font-semibold text-gray-900 mb-1">Call Support</div>
+                <div className="text-sm text-gray-600">24/7 Helpline</div>
+              </button>
+
+              <button className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md hover:border-green-300 transition-all text-left">
+                <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">💬</span>
+                </div>
+                <div className="font-semibold text-gray-900 mb-1">Live Chat</div>
+                <div className="text-sm text-gray-600">Instant support</div>
+              </button>
+
+              <button className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md hover:border-orange-300 transition-all text-left">
+                <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">📧</span>
+                </div>
+                <div className="font-semibold text-gray-900 mb-1">Email Us</div>
+                <div className="text-sm text-gray-600">24hr response</div>
+              </button>
+
+              <button className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md hover:border-purple-300 transition-all text-left">
+                <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">📚</span>
+                </div>
+                <div className="font-semibold text-gray-900 mb-1">Knowledge Base</div>
+                <div className="text-sm text-gray-600">Self-help guides</div>
+              </button>
+            </div>
+
+            {/* Emergency Contacts */}
+            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+              <div className="flex items-center mb-4">
+                <AlertTriangle className="h-6 w-6 text-red-600 mr-2" />
+                <h2 className="text-xl font-semibold text-red-900">Emergency Contacts</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="tel:112" className="flex items-center p-4 bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
+                  <div className="flex-1">
+                    <div className="font-semibold text-white text-lg">Emergency Services</div>
+                    <div className="text-red-100 text-sm">Police, Ambulance, Fire</div>
+                  </div>
+                  <div className="text-3xl font-bold text-white">112</div>
+                </a>
+                <a href="tel:18004251425" className="flex items-center p-4 bg-white border-2 border-red-300 hover:bg-red-50 rounded-lg transition-colors">
+                  <div className="flex-1">
+                    <div className="font-semibold text-red-900 text-lg">Healthcare Helpline</div>
+                    <div className="text-red-700 text-sm">24/7 Medical Support</div>
+                  </div>
+                  <div className="text-2xl font-bold text-red-600">1800-425-1425</div>
+                </a>
+              </div>
+            </div>
+
+            {/* FAQs */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <HelpIcon className="h-6 w-6 mr-2 text-purple-600" />
+                Frequently Asked Questions
+              </h2>
+              <div className="space-y-4">
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How do I add a new health log for a worker?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-purple-300 ml-4 mt-2">
+                    Navigate to the Workers tab, find the worker, click "View" and then select "Add Health Log". You can also use the voice log feature for quick entries.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How do I register a new worker?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-purple-300 ml-4 mt-2">
+                    Click the "Register new worker" button in the Workers section. Fill in all required details including personal information, employment details, and initial health assessment.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">What should I do in case of a medical emergency?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-purple-300 ml-4 mt-2">
+                    Immediately call 112 for emergency services or 1800-425-1425 for healthcare helpline. Update the worker's status in the system and create an emergency health log with all relevant details.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How can I view a worker's complete health history?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-purple-300 ml-4 mt-2">
+                    Click on "View" next to any worker in the Workers list. This will open a detailed modal showing complete demographics, employment, health information, and medical history.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How do I use the voice log feature?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-purple-300 ml-4 mt-2">
+                    Click the "Voice Log" button, allow microphone permissions, and speak clearly. The system will convert your speech to text and create a health log entry automatically.
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                  <span className="text-xl mr-2">📞</span>
+                  Technical Support
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-start">
+                    <span className="text-blue-600 mr-3">📱</span>
+                    <div>
+                      <div className="font-medium text-gray-900">Phone</div>
+                      <div className="text-sm text-gray-600">1800-425-1425 (Toll-Free)</div>
+                      <div className="text-xs text-gray-500 mt-1">24/7 Support</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-blue-600 mr-3">📧</span>
+                    <div>
+                      <div className="font-medium text-gray-900">Email</div>
+                      <div className="text-sm text-gray-600">support@swaasthyam.gov.in</div>
+                      <div className="text-xs text-gray-500 mt-1">Response within 24 hours</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                  <span className="text-xl mr-2">🏥</span>
+                  Medical Support
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-start">
+                    <span className="text-emerald-600 mr-3">📱</span>
+                    <div>
+                      <div className="font-medium text-gray-900">Healthcare Helpline</div>
+                      <div className="text-sm text-gray-600">1800-425-1425</div>
+                      <div className="text-xs text-gray-500 mt-1">Available in multiple languages</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-emerald-600 mr-3">📧</span>
+                    <div>
+                      <div className="font-medium text-gray-900">Medical Queries</div>
+                      <div className="text-sm text-gray-600">health@swaasthyam.gov.in</div>
+                      <div className="text-xs text-gray-500 mt-1">Priority response for emergencies</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Help Tip */}
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-6">
+              <div className="flex items-start">
+                <span className="text-3xl mr-4">💡</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Need More Help?</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Our support team is available 24/7 to assist you with any questions or issues. Don't hesitate to reach out via phone, email, or live chat.
+                  </p>
+                  <div className="flex space-x-3">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                      Start Live Chat
+                    </button>
+                    <button className="border border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                      Browse Knowledge Base
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </main>
     </div>

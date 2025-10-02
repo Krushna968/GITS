@@ -56,7 +56,7 @@ const OfficialDashboard = () => {
           totalAssigned: 198,
           activeAlerts: 3,
           phone: "+91 98765 43213",
-          email: "rajesh.k@kerala.gov.in",
+          email: "rajesh.k@health.gov.in",
         },
         {
           id: "2",
@@ -66,7 +66,7 @@ const OfficialDashboard = () => {
           totalAssigned: 156,
           activeAlerts: 1,
           phone: "+91 98765 43214",
-          email: "lakshmi.n@kerala.gov.in",
+          email: "lakshmi.n@health.gov.in",
         },
         {
           id: "3",
@@ -93,7 +93,7 @@ const OfficialDashboard = () => {
           totalAssigned: 198,
           activeAlerts: 3,
           phone: "+91 98765 43213",
-          email: "rajesh.k@kerala.gov.in",
+          email: "rajesh.k@health.gov.in",
         },
         {
           id: "5",
@@ -103,7 +103,7 @@ const OfficialDashboard = () => {
           totalAssigned: 156,
           activeAlerts: 1,
           phone: "+91 98765 43214",
-          email: "lakshmi.n@kerala.gov.in",
+          email: "lakshmi.n@health.gov.in",
         },
       ],
     },
@@ -122,7 +122,7 @@ const OfficialDashboard = () => {
           totalAssigned: 220,
           activeAlerts: 2,
           phone: "+91 98765 43215",
-          email: "priya.n@kerala.gov.in",
+          email: "priya.n@health.gov.in",
         },
       ],
     },
@@ -329,6 +329,20 @@ const OfficialDashboard = () => {
           >
             👥 Workers
           </button>
+          <button
+            className={`px-3 py-2 rounded-md font-medium transition-colors duration-200 whitespace-nowrap ${
+              selectedTab === "help"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("help");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            ❓ Help
+          </button>
         </nav>
       </div>
 
@@ -408,7 +422,18 @@ const OfficialDashboard = () => {
           >
             👥 Workers
           </button>
-          <button className="w-full text-left px-3 py-2 rounded-md font-medium text-blue-200 hover:bg-blue-800 transition-colors duration-200">
+          <button
+            className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-200 ${
+              selectedTab === "help"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("help");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
             ❓ Help
           </button>
         </nav>
@@ -1001,14 +1026,14 @@ const OfficialDashboard = () => {
               </div>
             </div>
 
-            {/* Interactive Kerala Health Map */}
+            {/* Interactive Health Map */}
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h3 className="font-semibold text-lg mb-4 flex items-center">
-                🗺️ Kerala Health Map - District-wise Analysis
+                🗺️ Health Map - District-wise Analysis
                 <span className="ml-2 text-sm text-gray-500">(Click districts for details)</span>
               </h3>
               <div className="bg-gradient-to-br from-green-50 to-blue-50 h-96 rounded-lg p-4 relative overflow-hidden">
-                {/* Simplified Kerala Map Layout */}
+                {/* Simplified Health Map Layout */}
                 <div className="relative w-full h-full">
                   {/* Map Grid */}
                   <div className="grid grid-cols-4 gap-2 h-full">
@@ -1295,6 +1320,262 @@ const OfficialDashboard = () => {
                     <div className="font-medium">Compliance Reports</div>
                     <div className="text-sm text-gray-600">Generate regulatory compliance reports</div>
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Help Tab */}
+        {selectedTab === "help" && (
+          <div className="p-4 md:p-6 space-y-6">
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 rounded-xl shadow-lg">
+              <h1 className="text-2xl font-bold mb-2">❓ Help & Support Center</h1>
+              <p className="text-indigo-100">Comprehensive support for system administrators and officials</p>
+            </div>
+
+            {/* Quick Support Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-blue-300 transition-all cursor-pointer">
+                <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">📞</span>
+                </div>
+                <div className="font-semibold text-gray-900 mb-1">Phone Support</div>
+                <div className="text-sm text-gray-600">24/7 Technical</div>
+                <div className="text-xs text-blue-600 mt-2 font-medium">1800-425-1425</div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-green-300 transition-all cursor-pointer">
+                <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">💬</span>
+                </div>
+                <div className="font-semibold text-gray-900 mb-1">Live Chat</div>
+                <div className="text-sm text-gray-600">Instant Help</div>
+                <div className="text-xs text-green-600 mt-2 font-medium">Click to start</div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-orange-300 transition-all cursor-pointer">
+                <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">📧</span>
+                </div>
+                <div className="font-semibold text-gray-900 mb-1">Email Support</div>
+                <div className="text-sm text-gray-600">Priority Response</div>
+                <div className="text-xs text-orange-600 mt-2 font-medium">admin@swaasthyam.gov.in</div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-purple-300 transition-all cursor-pointer">
+                <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-2xl">📚</span>
+                </div>
+                <div className="font-semibold text-gray-900 mb-1">Documentation</div>
+                <div className="text-sm text-gray-600">User Guides</div>
+                <div className="text-xs text-purple-600 mt-2 font-medium">View resources</div>
+              </div>
+            </div>
+
+            {/* Emergency Assistance */}
+            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+              <div className="flex items-center mb-4">
+                <span className="text-2xl mr-3">🚨</span>
+                <h2 className="text-xl font-semibold text-red-900">Emergency Support</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="tel:112" className="flex items-center p-4 bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
+                  <div className="flex-1">
+                    <div className="font-semibold text-white text-lg">Emergency Services</div>
+                    <div className="text-red-100 text-sm">Police, Ambulance, Fire</div>
+                  </div>
+                  <div className="text-3xl font-bold text-white">112</div>
+                </a>
+                <a href="tel:18004251425" className="flex items-center p-4 bg-white border-2 border-red-300 hover:bg-red-50 rounded-lg transition-colors">
+                  <div className="flex-1">
+                    <div className="font-semibold text-red-900 text-lg">System Emergency</div>
+                    <div className="text-red-700 text-sm">Critical System Issues</div>
+                  </div>
+                  <div className="text-2xl font-bold text-red-600">1800-425-1425</div>
+                </a>
+              </div>
+            </div>
+
+            {/* System Administrator FAQs */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <span className="text-2xl mr-3">❓</span>
+                Administrator FAQs
+              </h2>
+              <div className="space-y-4">
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How do I manage officer accounts and permissions?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-indigo-300 ml-4 mt-2">
+                    Navigate to Area Management, select an area, and view officers. You can assign/revoke permissions, add new officers, and manage their worker assignments from the officer detail page.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How can I view analytics and generate reports?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-indigo-300 ml-4 mt-2">
+                    Access the Analytics tab to view comprehensive health data visualizations including disease trends, health status distributions, compliance metrics, and district-wise analysis. Use the "Generate Report" button on the dashboard for custom reports.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How do I handle critical health alerts?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-indigo-300 ml-4 mt-2">
+                    Critical alerts appear on the Dashboard with red indicators. Click "Alert" to notify relevant health departments, officers, and initiate emergency protocols. Document all actions taken in the system for compliance and tracking.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How do I allocate resources across districts?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-indigo-300 ml-4 mt-2">
+                    Use the "Resource Allocation" button on the dashboard to view current resource distribution. The Analytics health map shows district-wise health scores to identify areas needing additional support. Allocate healthcare providers and officers based on workload and alerts.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">What are the data security and compliance protocols?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-indigo-300 ml-4 mt-2">
+                    All health data is encrypted at rest and in transit. Access is role-based and logged. The system complies with Indian data protection laws and healthcare regulations. Regular security audits are conducted, and all sensitive operations require additional authentication.
+                  </div>
+                </details>
+
+                <details className="group">
+                  <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span className="font-semibold text-gray-900">How do I bulk register workers or import data?</span>
+                    <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-4 text-sm text-gray-600 border-l-4 border-indigo-300 ml-4 mt-2">
+                    In the Workers tab, use the "Bulk Worker Import" tool to upload CSV files containing worker data. Download the template first to ensure correct formatting. The system validates all data before import and provides detailed error reports if issues are found.
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            {/* System Resources */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                  <span className="text-xl mr-2">📈</span>
+                  System Resources
+                </h3>
+                <div className="space-y-3">
+                  <a href="#" className="block p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium text-gray-900">Administrator Guide</div>
+                    <div className="text-sm text-gray-600 mt-1">Complete system administration manual</div>
+                  </a>
+                  <a href="#" className="block p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium text-gray-900">API Documentation</div>
+                    <div className="text-sm text-gray-600 mt-1">Technical API reference and integration guides</div>
+                  </a>
+                  <a href="#" className="block p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium text-gray-900">Training Videos</div>
+                    <div className="text-sm text-gray-600 mt-1">Step-by-step video tutorials</div>
+                  </a>
+                  <a href="#" className="block p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium text-gray-900">Compliance Guidelines</div>
+                    <div className="text-sm text-gray-600 mt-1">Healthcare regulations and best practices</div>
+                  </a>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                  <span className="text-xl mr-2">📞</span>
+                  Contact Information
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex items-start">
+                    <span className="text-blue-600 mr-3">📱</span>
+                    <div>
+                      <div className="font-medium text-gray-900">Technical Support</div>
+                      <div className="text-sm text-gray-600">1800-425-1425 (Toll-Free)</div>
+                      <div className="text-xs text-gray-500 mt-1">24/7 System Support</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-blue-600 mr-3">📧</span>
+                    <div>
+                      <div className="font-medium text-gray-900">Admin Support Email</div>
+                      <div className="text-sm text-gray-600">admin@swaasthyam.gov.in</div>
+                      <div className="text-xs text-gray-500 mt-1">Priority response for officials</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-blue-600 mr-3">🏢</span>
+                    <div>
+                      <div className="font-medium text-gray-900">Central Office</div>
+                      <div className="text-sm text-gray-600">
+                        Ministry of Health & Family Welfare<br />
+                        Government of India<br />
+                        New Delhi - 110001
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* System Status */}
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6">
+              <div className="flex items-start">
+                <span className="text-3xl mr-4">✅</span>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
+                    System Status: All Systems Operational
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    All services are running normally. Last system check: 2 minutes ago. 
+                    For real-time system status and scheduled maintenance updates, visit the status page or contact technical support.
+                  </p>
+                  <div className="flex space-x-3">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                      View System Status
+                    </button>
+                    <button className="border border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                      Report Issue
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Tips */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                <span className="text-xl mr-2">💡</span>
+                Quick Tips for Administrators
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="font-medium text-blue-900 mb-2">🔔 Set Up Alert Notifications</div>
+                  <div className="text-sm text-blue-700">Configure email and SMS alerts for critical health events to ensure rapid response times.</div>
+                </div>
+                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                  <div className="font-medium text-green-900 mb-2">📊 Regular Data Backups</div>
+                  <div className="text-sm text-green-700">System automatically backs up data every 6 hours. Manual backups available in settings.</div>
+                </div>
+                <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                  <div className="font-medium text-purple-900 mb-2">👥 User Access Management</div>
+                  <div className="text-sm text-purple-700">Regularly review and update user permissions. Remove inactive accounts for security.</div>
+                </div>
+                <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
+                  <div className="font-medium text-orange-900 mb-2">📈 Monitor System Performance</div>
+                  <div className="text-sm text-orange-700">Check analytics dashboard weekly to identify trends and optimize resource allocation.</div>
                 </div>
               </div>
             </div>

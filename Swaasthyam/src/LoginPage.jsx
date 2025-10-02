@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingAnimation from "./LoadingAnimation";
+import { useLanguage } from './LanguageContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [showOtp, setShowOtp] = useState(false);
   const [selectedUserType, setSelectedUserType] = useState("migrant");
   const [isLoading, setIsLoading] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
 
   const handlePhoneChange = (e) => {
     const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
@@ -24,14 +27,32 @@ const LoginPage = () => {
     setPhone(pasted);
   };
 
-  const handleSendOtp = () => {
+  const handleSendOtp = async () => {
     if (phone.length !== 10) {
       alert("Please enter a 10-digit mobile number");
       return;
     }
-    setShowOtp(true);
-    setOtp("");
-    // TODO: trigger backend OTP send
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setShowOtp(true);
+        setOtp("");
+        alert(`OTP sent to ${phone}! Check your backend terminal for the 6-digit code.`);
+      } else {
+        alert(data.message || 'Failed to send OTP. User may not be registered.');
+      }
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      alert('Failed to send OTP. Make sure backend is running on port 5000!');
+    }
   };
 
   const handleOtpChange = (e) => {
@@ -39,7 +60,7 @@ const LoginPage = () => {
     setOtp(digits);
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     if (otp.length !== 6) {
       alert("Please enter the 6-digit OTP");
       return;
@@ -47,18 +68,45 @@ const LoginPage = () => {
     
     setIsLoading(true);
     
-    // Simulate API call with loading animation
-    setTimeout(() => {
-      if (selectedUserType === "officer") {
-        navigate("/officer");
-      } else if (selectedUserType === "official") {
-        navigate("/official-dashboard");
-      } else if (selectedUserType === "migrant") {
-        navigate("/migrant-dashboard");
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, otp })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Store token and user info in localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Navigate based on user role
+        const userRole = data.user.role;
+        if (userRole === 'officer') {
+          navigate('/officer');
+        } else if (userRole === 'official') {
+          navigate('/official-dashboard');
+        } else if (userRole === 'worker') {
+          navigate('/migrant-dashboard');
+        } else if (userRole === 'supervisor') {
+          // Supervisors can also access officer dashboard
+          navigate('/officer');
+        } else {
+          alert('Unknown user role: ' + userRole);
+        }
+      } else {
+        alert(data.message || 'Invalid OTP. Please try again.');
+        setIsLoading(false);
       }
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      alert('Failed to verify OTP. Make sure backend is running!');
       setIsLoading(false);
-    }, 1500);
+    }
   };
+
 
   const handleRegisterClick = () => {
     if (selectedUserType === "officer") {
@@ -72,99 +120,107 @@ const LoginPage = () => {
     setSelectedUserType(e.target.value);
   };
 
+  const handleQRScan = () => {
+    // Toggle camera for QR scanning
+    setShowCamera(!showCamera);
+    if (!showCamera) {
+      // Request camera permissions
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then((stream) => {
+            // Camera access granted
+            console.log('Camera access granted');
+            // You can add actual QR scanning logic here
+            // For now, just show camera is active
+            setTimeout(() => {
+              stream.getTracks().forEach(track => track.stop());
+              setShowCamera(false);
+              alert('QR Code scanning feature will be implemented with a QR scanner library');
+            }, 3000);
+          })
+          .catch((err) => {
+            console.error('Camera access denied:', err);
+            alert('Camera access denied. Please enable camera permissions.');
+            setShowCamera(false);
+          });
+      } else {
+        alert('Camera not supported on this device');
+        setShowCamera(false);
+      }
+    }
+  };
+
   if (isLoading) {
     return <LoadingAnimation message={`Logging in as ${selectedUserType}...`} />;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <header className="flex font-[Quicksand] justify-center px-4 py-6">
-        <div className="w-full max-w-md flex items-center flex-col">
-          <div className="mb-4">
+    <div className="h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 flex flex-col overflow-hidden transition-colors duration-300">
+      <header className="flex font-[Quicksand] justify-center px-4 py-4">
+        <div className="w-full max-w-3xl flex items-center flex-col">
+          <div className="mb-3">
             <img
-              className="h-16 w-16 object-contain"
+              className="h-24 w-24 object-contain"
               src="/Cooked-Coders/assets/logo 2.png"
               alt="Swaasthyam Logo"
             />
           </div>
-          <h1 className="text-blue-600 font-bold text-2xl md:text-3xl text-center">Swaasthyam</h1>
-          <p className="text-gray-700 text-center text-sm md:text-base mt-2 px-4">
-            Digital Health Record Management System for Migrant Workers in
-            Kerala
+          <h1 className="text-blue-600 dark:text-blue-400 font-bold text-2xl md:text-3xl text-center transition-colors">{t('swaasthyam')}</h1>
+          <p className="text-gray-700 dark:text-gray-300 text-center text-sm md:text-base mt-1 px-4 transition-colors">
+            {t('digitalHealthRecord')}
           </p>
         </div>
       </header>
 
-      <main className="flex justify-center px-4 pb-8">
-        <article className="font-[Quicksand] w-full max-w-md">
-          <div className="bg-white p-6 md:p-8 border-blue-200 border border-solid rounded-2xl shadow-xl">
-            <div className="mb-6">
-            <h2 className="text-blue-600 text-center font-bold text-lg md:text-xl mb-2">
-              Welcome to Swaasthyam
+      <main className="flex-1 flex justify-center px-4 py-2 overflow-hidden">
+        <article className="font-[Quicksand] w-full max-w-xl">
+          <div className="bg-white dark:bg-gray-800 p-4 md:p-6 border-blue-200 dark:border-gray-700 border border-solid rounded-2xl shadow-xl dark:shadow-2xl h-full overflow-y-auto transition-colors duration-300">
+            <div className="mb-3">
+            <h2 className="text-blue-600 dark:text-blue-400 text-center font-bold text-base md:text-lg mb-1 transition-colors">
+              {t('welcomeToSwaasthyam')}
             </h2>
-            <p className="text-center text-gray-600 text-sm mb-6">
-              Secure and comprehensive health record management for migrant
-              workers
+            <p className="text-center text-gray-600 dark:text-gray-400 text-xs mb-3 transition-colors">
+              {t('secureHealthRecord')}
             </p>
-              <p className="font-semibold text-blue-600 mb-4">Select user type</p>
+              <p className="font-semibold text-blue-600 dark:text-blue-400 mb-2 text-sm transition-colors">{t('selectUserType')}</p>
               
-              <div className="space-y-3">
-                <label className="flex items-center font-medium text-gray-700 cursor-pointer">
-                  <input
-                    className="mr-3 h-4 w-4"
-                    type="radio"
-                    name="role"
-                    value="migrant"
-                    checked={selectedUserType === "migrant"}
-                    onChange={handleUserTypeChange}
-                  />
-                  <span>Migrant Worker</span>
-                </label>
-
-                <label className="flex items-center font-medium text-gray-700 cursor-pointer">
-                  <input
-                    className="mr-3 h-4 w-4"
-                    type="radio"
-                    name="role"
-                    value="officer"
-                    checked={selectedUserType === "officer"}
-                    onChange={handleUserTypeChange}
-                  />
-                  <span>Officer (Supervisor/Healthcare/NGO)</span>
-                </label>
-
-                <label className="flex items-center font-medium text-gray-700 cursor-pointer">
-                  <input
-                    className="mr-3 h-4 w-4"
-                    type="radio"
-                    name="role"
-                    value="official"
-                    checked={selectedUserType === "official"}
-                    onChange={handleUserTypeChange}
-                  />
-                  <span>Official (Government)</span>
-                </label>
+              <div className="relative">
+                <select
+                  className="w-full h-10 px-3 border border-blue-200 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 cursor-pointer outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 transition-colors appearance-none text-sm"
+                  value={selectedUserType}
+                  onChange={handleUserTypeChange}
+                >
+                  <option value="migrant">{t('migrantWorker')}</option>
+                  <option value="officer">{t('officer')}</option>
+                  <option value="official">{t('official')}</option>
+                </select>
+                {/* Custom dropdown arrow */}
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </div>
             </div>
 
-            <div className="mb-6">
-              <p className="font-semibold text-blue-600 mb-3">Login with mobile number</p>
+            <div className="mb-3">
+              <p className="font-semibold text-blue-600 dark:text-blue-400 mb-2 text-sm transition-colors">{t('loginWithMobile')}</p>
               <input
                 required
-                className="w-full outline-none text-black border border-blue-200 text-sm h-12 rounded-lg px-4 py-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full outline-none text-black dark:text-gray-200 bg-white dark:bg-gray-700 border border-blue-200 dark:border-gray-600 text-sm h-10 rounded-lg px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 transition-colors"
                 type="tel"
                 inputMode="numeric"
                 maxLength={10}
                 value={phone}
                 onChange={handlePhoneChange}
                 onPaste={handlePastePhone}
-                placeholder="Enter mobile number"
+                placeholder={t('enterMobile')}
               />
 
               <button
                 type="button"
                 onClick={handleSendOtp}
-                className="w-full mt-4 h-12 text-sm font-medium rounded-lg shadow-md transition-all duration-200 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
+                className="w-full mt-2 h-10 text-sm font-medium rounded-lg shadow-md transition-all duration-200 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
                 style={
                   phone.length === 10
                     ? {
@@ -179,27 +235,27 @@ const LoginPage = () => {
                 }
                 disabled={phone.length !== 10}
               >
-                Send OTP
+                {t('sendOTP')}
               </button>
             </div>
 
             {showOtp && (
-              <div className="mb-6">
+              <div className="mb-3">
                 <input
                   required
-                  className="w-full outline-none text-black border border-blue-200 text-sm h-12 rounded-lg px-4 py-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors mb-4"
+                  className="w-full outline-none text-black dark:text-gray-200 bg-white dark:bg-gray-700 border border-blue-200 dark:border-gray-600 text-sm h-10 rounded-lg px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 transition-colors mb-2"
                   type="tel"
                   inputMode="numeric"
                   maxLength={6}
                   value={otp}
                   onChange={handleOtpChange}
-                  placeholder="Enter 6-digit OTP"
+                  placeholder={t('enterOTP')}
                 />
 
                 <button
                   type="button"
                   onClick={handleVerify}
-                  className="w-full h-12 text-sm font-medium rounded-lg shadow-md transition-all duration-200 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
+                  className="w-full h-10 text-sm font-medium rounded-lg shadow-md transition-all duration-200 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
                   style={
                     otp.length === 6
                       ? {
@@ -214,62 +270,78 @@ const LoginPage = () => {
                   }
                   disabled={otp.length !== 6}
                 >
-                  Verify and Login
+                  {t('verifyLogin')}
                 </button>
               </div>
             )}
 
             {/* Alternative Login Methods */}
-            <div className="space-y-3 mb-6">
+            <div className="mb-3">
               <button
                 type="button"
-                className="w-full h-12 flex items-center justify-center border border-blue-200 rounded-lg text-sm text-gray-700 shadow-sm transition-all duration-200 hover:bg-blue-50 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={() => navigate('/digilocker', { 
+                  state: { 
+                    userName: 'Rajesh Kumar',
+                    userQRId: 'SW-2024-KL-001234'
+                  } 
+                })}
+                className="w-full h-10 flex items-center justify-center border border-blue-200 dark:border-gray-600 rounded-lg text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 shadow-sm transition-all duration-200 hover:bg-blue-50 dark:hover:bg-gray-600 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
               >
                 <img
                   src="/Cooked-Coders/assets/lock.png"
-                  className="h-4 w-4 mr-3"
+                  className="h-4 w-4 mr-2"
                   alt="DigiLocker"
                 />
-                Login with DigiLocker
-              </button>
-
-              <button
-                type="button"
-                className="w-full h-12 flex items-center justify-center border border-gray-300 rounded-lg text-sm text-gray-700 shadow-sm transition-all duration-200 hover:bg-gray-50 active:scale-98 focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                <img
-                  src="/Cooked-Coders/assets/qr.png"
-                  className="h-4 w-4 mr-3"
-                  alt="QR Code"
-                />
-                Scan QR code
+                {t('loginWithDigiLocker')}
               </button>
             </div>
 
-            {/* QR Scanner */}
-            <button
-              type="button"
-              className="w-full h-32 flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-blue-400 text-gray-700 bg-blue-50 transition-all duration-200 hover:bg-blue-100 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
-            >
-              <img
-                src="/Cooked-Coders/assets/camera.png"
-                className="h-8 w-8 mb-2"
-                alt="Camera"
-              />
-              <p className="text-blue-600 font-medium">Scan QR Code</p>
-              <p className="text-xs text-gray-600">Tap to activate camera scanner</p>
-            </button>
+            {/* QR Scanner - Only for migrant workers and officers */}
+            {selectedUserType !== "official" && (
+              <button
+                type="button"
+                onClick={handleQRScan}
+                className={`w-full h-28 flex flex-col items-center justify-center rounded-lg border-2 border-dashed transition-all duration-200 mb-3 ${
+                  showCamera 
+                    ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
+                    : 'border-blue-400 dark:border-blue-600 text-gray-700 dark:text-gray-200 bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600'
+                } active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400`}
+              >
+                {showCamera ? (
+                  <>
+                    <div className="animate-pulse">
+                      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    </div>
+                    <p className="text-green-600 font-medium mt-1 text-sm">Camera Active</p>
+                    <p className="text-xs text-green-600">Scanning for QR Code...</p>
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src="/Cooked-Coders/assets/camera.png"
+                      className="h-8 w-8 mb-1"
+                    alt="Camera"
+                  />
+                  <p className="text-blue-600 font-medium text-sm">{t('scanQRCode')}</p>
+                  <p className="text-xs text-gray-600">{t('tapToActivate')}</p>
+                  </>
+                )}
+              </button>
+            )}
 
             {/* Registration Button */}
             {selectedUserType !== "migrant" && (
               <button
                 type="button"
                 onClick={handleRegisterClick}
-                className="w-full h-12 flex items-center justify-center rounded-lg border border-green-600 text-green-600 bg-green-50 font-medium shadow-sm transition-all duration-200 hover:bg-green-100 active:scale-98 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full h-10 flex items-center justify-center rounded-lg border border-green-600 dark:border-green-500 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 font-medium shadow-sm transition-all duration-200 hover:bg-green-100 dark:hover:bg-green-900/50 active:scale-98 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 text-sm"
               >
                 {selectedUserType === "officer"
-                  ? "Register new officer"
-                  : "Register new official"}
+                  ? t('registerNewOfficer')
+                  : t('registerNewOfficial')}
               </button>
             )}
           </div>
@@ -277,15 +349,15 @@ const LoginPage = () => {
       </main>
       
       {/* Footer */}
-      <footer className="flex justify-center items-center gap-2 px-4 pb-6">
-        <span className="text-xs px-3 py-1 rounded-full text-green-700 bg-green-100 border border-green-300">
-          🔒 Secure
+      <footer className="flex justify-center items-center gap-2 px-4 py-2">
+        <span className="text-xs px-2 py-1 rounded-full text-green-700 bg-green-100 border border-green-300">
+          🔒 {t('secure')}
         </span>
-        <span className="text-xs px-3 py-1 rounded-full text-blue-700 bg-blue-100 border border-blue-300">
-          🏛️ Official
+        <span className="text-xs px-2 py-1 rounded-full text-blue-700 bg-blue-100 border border-blue-300">
+          🏛️ {t('officialGovt')}
         </span>
-        <span className="text-xs px-3 py-1 rounded-full text-gray-700 bg-gray-100 border border-gray-300">
-          🏞️ Kerala Govt.
+        <span className="text-xs px-2 py-1 rounded-full text-gray-700 bg-gray-100 border border-gray-300">
+          🏞️ {t('govtInitiative')}
         </span>
       </footer>
     </div>
