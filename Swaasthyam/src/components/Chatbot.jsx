@@ -6,7 +6,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "🙏 Namaste! I'm your Swaasthyam AI assistant powered by Groq (Llama 3.1). I can help with login issues, health records, OTP problems, and more. How may I assist you today?",
+      text: "🙏 Namaste! I'm your Swaasthyam AI assistant powered by Groq (Llama 3.3 70B). I can help with:\n\n✅ Login & OTP issues\n✅ Health records\n✅ Registration\n✅ Emergency contacts\n✅ Platform features\n✅ Security & privacy\n\nHow may I assist you today?",
       sender: 'bot',
       timestamp: new Date()
     }

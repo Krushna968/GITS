@@ -104,4 +104,5 @@ if ($deployProd -eq "y") {
 
 Write-Host ""
 Write-Host "✅ Done!" -ForegroundColor Green
+}
 

@@ -162,7 +162,7 @@ const LoginPage = () => {
           <div className="mb-3">
             <img
               className="h-24 w-24 object-contain"
-              src="/Cooked-Coders/assets/logo 2.png"
+              src="/assets/logo 2.png"
               alt="Swaasthyam Logo"
             />
           </div>
@@ -289,7 +289,7 @@ const LoginPage = () => {
                 className="w-full h-10 flex items-center justify-center border border-blue-200 rounded-lg text-sm text-gray-700 bg-white shadow-sm transition-all duration-200 hover:bg-blue-50 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <img
-                  src="/Cooked-Coders/assets/lock.png"
+                  src="/assets/lock.png"
                   className="h-4 w-4 mr-2"
                   alt="DigiLocker"
                 />
@@ -322,10 +322,10 @@ const LoginPage = () => {
                 ) : (
                   <>
                     <img
-                      src="/Cooked-Coders/assets/camera.png"
+                      src="/assets/camera.png"
                       className="h-8 w-8 mb-1"
-                    alt="Camera"
-                  />
+                      alt="Camera"
+                    />
                   <p className="text-blue-600 font-medium text-sm">{t('scanQRCode')}</p>
                   <p className="text-xs text-gray-600">{t('tapToActivate')}</p>
                   </>

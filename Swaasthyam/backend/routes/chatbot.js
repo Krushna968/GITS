@@ -19,21 +19,25 @@ router.post('/query', async (req, res) => {
     // Use sessionId for conversation context (or generate unique one)
     const session = sessionId || `session_${Date.now()}`;
 
-    // Try Groq AI first, fallback to rule-based if it fails
+    // Use Groq AI as PRIMARY with rule-based fallback
     let response;
-    let powered = 'Groq AI (Llama 3.1)';
+    let powered = 'Groq AI (Llama 3.3 70B)';
     
     try {
+      // Try Groq AI first
       response = await groqChatbotService.getResponse(message, session);
-      // If response contains the fallback error message, use rule-based instead
+      
+      // If Groq returns error message, use rule-based
       if (response.includes("I apologize, but I'm having trouble")) {
+        console.log('⚠️  Groq AI returned error, using rule-based fallback');
         response = chatbotService.getResponse(message);
-        powered = 'Rule-Based AI';
+        powered = 'Smart Pattern Matching (Fallback)';
       }
     } catch (error) {
-      // Fallback to rule-based chatbot
+      // Fallback to rule-based chatbot if Groq fails
+      console.error('❌ Groq AI Error:', error.message);
       response = chatbotService.getResponse(message);
-      powered = 'Rule-Based AI';
+      powered = 'Smart Pattern Matching (Fallback)';
     }
     
     const quickReplies = groqChatbotService.getQuickReplies(message);

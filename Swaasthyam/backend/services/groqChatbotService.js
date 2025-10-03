@@ -5,13 +5,16 @@ import Groq from 'groq-sdk';
 
 class GroqChatbotService {
   constructor() {
-    // Initialize Groq AI with API key from environment variables
-    // Get your free key from: https://console.groq.com/keys
-    // Set in .env file: GROQ_API_KEY=your_key_here
-    const API_KEY = process.env.GROQ_API_KEY || 'your_groq_api_key_here';
+    // Initialize Groq AI with API key
+    // IMPORTANT: Replace 'YOUR_ACTUAL_GROQ_API_KEY_HERE' with your real Groq API key
+    // Get free key from: https://console.groq.com/keys
+    
+    const API_KEY = process.env.GROQ_API_KEY || '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';
     
     if (!process.env.GROQ_API_KEY) {
-      console.warn('⚠️  GROQ_API_KEY not set in environment variables. Using fallback key.');
+      console.warn('⚠️  Using hardcoded GROQ_API_KEY. For production, use environment variables.');
+    } else {
+      console.log('✅ Using GROQ_API_KEY from environment variables');
     }
     
     this.groq = new Groq({ apiKey: API_KEY });
