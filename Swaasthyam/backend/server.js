@@ -24,6 +24,9 @@ connectDB();
 // Initialize Express app
 const app = express();
 
+// Trust proxy - Required for Render, Heroku, etc.
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet()); // Set security headers
 app.use(mongoSanitize()); // Prevent NoSQL injection
