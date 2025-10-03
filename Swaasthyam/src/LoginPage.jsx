@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingAnimation from "./LoadingAnimation";
 import { useLanguage } from './LanguageContext';
+import { API_ENDPOINTS } from './config/api';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const LoginPage = () => {
     }
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/send-otp', {
+      const response = await fetch(API_ENDPOINTS.SEND_OTP, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone })
@@ -51,7 +52,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error('Error sending OTP:', error);
-      alert('Failed to send OTP. Make sure backend is running on port 5000!');
+      alert('Failed to send OTP. Please check your internet connection and try again!');
     }
   };
 
@@ -69,7 +70,7 @@ const LoginPage = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+      const response = await fetch(API_ENDPOINTS.VERIFY_OTP, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone, otp })
@@ -102,7 +103,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error('Error verifying OTP:', error);
-      alert('Failed to verify OTP. Make sure backend is running!');
+      alert('Failed to verify OTP. Please check your internet connection!');
       setIsLoading(false);
     }
   };
@@ -155,7 +156,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 flex flex-col overflow-hidden transition-colors duration-300">
+    <div className="h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col overflow-hidden">
       <header className="flex font-[Quicksand] justify-center px-4 py-4">
         <div className="w-full max-w-3xl flex items-center flex-col">
           <div className="mb-3">
@@ -165,8 +166,8 @@ const LoginPage = () => {
               alt="Swaasthyam Logo"
             />
           </div>
-          <h1 className="text-blue-600 dark:text-blue-400 font-bold text-2xl md:text-3xl text-center transition-colors">{t('swaasthyam')}</h1>
-          <p className="text-gray-700 dark:text-gray-300 text-center text-sm md:text-base mt-1 px-4 transition-colors">
+          <h1 className="text-blue-600 font-bold text-2xl md:text-3xl text-center">{t('swaasthyam')}</h1>
+          <p className="text-gray-700 text-center text-sm md:text-base mt-1 px-4">
             {t('digitalHealthRecord')}
           </p>
         </div>
@@ -174,19 +175,19 @@ const LoginPage = () => {
 
       <main className="flex-1 flex justify-center px-4 py-2 overflow-hidden">
         <article className="font-[Quicksand] w-full max-w-xl">
-          <div className="bg-white dark:bg-gray-800 p-4 md:p-6 border-blue-200 dark:border-gray-700 border border-solid rounded-2xl shadow-xl dark:shadow-2xl h-full overflow-y-auto transition-colors duration-300">
+          <div className="bg-white p-4 md:p-6 border-blue-200 border border-solid rounded-2xl shadow-xl h-full overflow-y-auto">
             <div className="mb-3">
-            <h2 className="text-blue-600 dark:text-blue-400 text-center font-bold text-base md:text-lg mb-1 transition-colors">
+            <h2 className="text-blue-600 text-center font-bold text-base md:text-lg mb-1">
               {t('welcomeToSwaasthyam')}
             </h2>
-            <p className="text-center text-gray-600 dark:text-gray-400 text-xs mb-3 transition-colors">
+            <p className="text-center text-gray-600 text-xs mb-3">
               {t('secureHealthRecord')}
             </p>
-              <p className="font-semibold text-blue-600 dark:text-blue-400 mb-2 text-sm transition-colors">{t('selectUserType')}</p>
+              <p className="font-semibold text-blue-600 mb-2 text-sm">{t('selectUserType')}</p>
               
               <div className="relative">
                 <select
-                  className="w-full h-10 px-3 border border-blue-200 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 cursor-pointer outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 transition-colors appearance-none text-sm"
+                  className="w-full h-10 px-3 border border-blue-200 rounded-lg text-gray-700 bg-white cursor-pointer outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none text-sm"
                   value={selectedUserType}
                   onChange={handleUserTypeChange}
                 >
@@ -204,10 +205,10 @@ const LoginPage = () => {
             </div>
 
             <div className="mb-3">
-              <p className="font-semibold text-blue-600 dark:text-blue-400 mb-2 text-sm transition-colors">{t('loginWithMobile')}</p>
+              <p className="font-semibold text-blue-600 mb-2 text-sm">{t('loginWithMobile')}</p>
               <input
                 required
-                className="w-full outline-none text-black dark:text-gray-200 bg-white dark:bg-gray-700 border border-blue-200 dark:border-gray-600 text-sm h-10 rounded-lg px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 transition-colors"
+                className="w-full outline-none text-black bg-white border border-blue-200 text-sm h-10 rounded-lg px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 type="tel"
                 inputMode="numeric"
                 maxLength={10}
@@ -243,7 +244,7 @@ const LoginPage = () => {
               <div className="mb-3">
                 <input
                   required
-                  className="w-full outline-none text-black dark:text-gray-200 bg-white dark:bg-gray-700 border border-blue-200 dark:border-gray-600 text-sm h-10 rounded-lg px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 transition-colors mb-2"
+                  className="w-full outline-none text-black bg-white border border-blue-200 text-sm h-10 rounded-lg px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-2"
                   type="tel"
                   inputMode="numeric"
                   maxLength={6}
@@ -285,7 +286,7 @@ const LoginPage = () => {
                     userQRId: 'SW-2024-KL-001234'
                   } 
                 })}
-                className="w-full h-10 flex items-center justify-center border border-blue-200 dark:border-gray-600 rounded-lg text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 shadow-sm transition-all duration-200 hover:bg-blue-50 dark:hover:bg-gray-600 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                className="w-full h-10 flex items-center justify-center border border-blue-200 rounded-lg text-sm text-gray-700 bg-white shadow-sm transition-all duration-200 hover:bg-blue-50 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <img
                   src="/Cooked-Coders/assets/lock.png"
@@ -303,9 +304,9 @@ const LoginPage = () => {
                 onClick={handleQRScan}
                 className={`w-full h-28 flex flex-col items-center justify-center rounded-lg border-2 border-dashed transition-all duration-200 mb-3 ${
                   showCamera 
-                    ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
-                    : 'border-blue-400 dark:border-blue-600 text-gray-700 dark:text-gray-200 bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600'
-                } active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400`}
+                    ? 'border-green-500 bg-green-50 text-green-700' 
+                    : 'border-blue-400 text-gray-700 bg-blue-50 hover:bg-blue-100'
+                } active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
                 {showCamera ? (
                   <>
@@ -337,7 +338,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={handleRegisterClick}
-                className="w-full h-10 flex items-center justify-center rounded-lg border border-green-600 dark:border-green-500 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 font-medium shadow-sm transition-all duration-200 hover:bg-green-100 dark:hover:bg-green-900/50 active:scale-98 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 text-sm"
+                className="w-full h-10 flex items-center justify-center rounded-lg border border-green-600 text-green-600 bg-green-50 font-medium shadow-sm transition-all duration-200 hover:bg-green-100 active:scale-98 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
               >
                 {selectedUserType === "officer"
                   ? t('registerNewOfficer')

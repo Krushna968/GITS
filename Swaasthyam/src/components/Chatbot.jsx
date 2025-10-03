@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,7 @@ const Chatbot = () => {
 
   const fetchQuickReplies = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/chatbot/quick-replies');
+      const response = await fetch(API_ENDPOINTS.CHATBOT_QUICK_REPLIES);
       const data = await response.json();
       if (data.success) {
         setQuickReplies(data.quickReplies);
@@ -64,7 +65,7 @@ const Chatbot = () => {
 
     try {
       // Call chatbot API with session tracking
-      const response = await fetch('http://localhost:5000/api/chatbot/query', {
+      const response = await fetch(API_ENDPOINTS.CHATBOT_QUERY, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
