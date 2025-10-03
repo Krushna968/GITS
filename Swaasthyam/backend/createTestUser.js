@@ -1,9 +1,27 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import fs from 'fs';
 
-// Load environment variables
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load environment variables - try .env.production first, then .env
+const envProductionPath = join(__dirname, '.env.production');
+const envPath = join(__dirname, '.env');
+
+if (fs.existsSync(envProductionPath)) {
+  console.log('📦 Using .env.production');
+  dotenv.config({ path: envProductionPath });
+} else if (fs.existsSync(envPath)) {
+  console.log('📦 Using .env');
+  dotenv.config({ path: envPath });
+} else {
+  console.log('📦 Using default .env');
+  dotenv.config();
+}
 
 // User Model
 const userSchema = new mongoose.Schema({
