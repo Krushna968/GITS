@@ -32,6 +32,7 @@ app.use(mongoSanitize()); // Prevent NoSQL injection
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
+  'https://swaasthyam-9eqcyormk-krushna-rasals-projects.vercel.app',
   process.env.CORS_ORIGIN
 ].filter(Boolean);
 
@@ -40,9 +41,11 @@ const corsOptions = {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    // Allow any vercel.app subdomain or exact match
+    if (allowedOrigins.indexOf(origin) !== -1 || (origin && origin.includes('vercel.app'))) {
       callback(null, true);
     } else {
+      console.log('❌ CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
